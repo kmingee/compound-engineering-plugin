@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Release numbering now follows the repository `v*` tag line. Starting at `v2.34.0`, the root CLI package and this changelog stay on that shared version stream. Older entries below retain the previous `0.x` CLI numbering.
 
+## [2.36.4](https://github.com/EveryInc/compound-engineering-plugin/compare/v2.36.3...v2.36.4) (2026-03-14)
+
+
+### Bug Fixes
+
+* **skills:** use fully-qualified agent namespace in Task invocations ([026602e](https://github.com/EveryInc/compound-engineering-plugin/commit/026602e6247d63a83502b80e72cd318232a06af7)), closes [#251](https://github.com/EveryInc/compound-engineering-plugin/issues/251)
+
 ## [2.36.3](https://github.com/EveryInc/compound-engineering-plugin/compare/v2.36.2...v2.36.3) (2026-03-13)
 
 
