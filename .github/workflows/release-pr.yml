@@ -48,17 +48,6 @@ jobs:
         if: steps.detect.outputs.is_release_merge == 'false'
         run: bun run release:validate
 
-      - name: Close stale release PR
-        if: steps.detect.outputs.is_release_merge == 'false'
-        run: |
-          PR=$(gh pr list --head release-please--branches--main --json number --jq '.[0].number')
-          if [ -n "$PR" ]; then
-            echo "Closing stale release PR #$PR so release-please regenerates with full changelog"
-            gh pr close "$PR" --delete-branch=false
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Maintain release PR
         id: release
         uses: googleapis/release-please-action@v4.4.0
