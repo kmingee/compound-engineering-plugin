@@ -68,15 +68,54 @@ Launch these subagents IN PARALLEL. Each returns text data to the orchestrator.
    - Extracts conversation history
    - Identifies problem type, component, symptoms
    - Incorporates auto memory excerpts (if provided by the orchestrator) as supplementary evidence when identifying problem type, component, and symptoms
-   - Validates against schema
-   - Returns: YAML frontmatter skeleton
+   - Validates all enum fields against the schema values below
+   - Maps problem_type to the `docs/solutions/` category directory
+   - Suggests a filename using the pattern `[sanitized-problem-slug]-[date].md`
+   - Returns: YAML frontmatter skeleton (must include `category:` field mapped from problem_type), category directory path, and suggested filename
+
+   **Schema enum values (validate against these exactly):**
+
+   - **problem_type**: build_error, test_failure, runtime_error, performance_issue, database_issue, security_issue, ui_bug, integration_issue, logic_error, developer_experience, workflow_issue, best_practice, documentation_gap
+   - **component**: rails_model, rails_controller, rails_view, service_object, background_job, database, frontend_stimulus, hotwire_turbo, email_processing, brief_system, assistant, authentication, payments, development_workflow, testing_framework, documentation, tooling
+   - **root_cause**: missing_association, missing_include, missing_index, wrong_api, scope_issue, thread_violation, async_timing, memory_leak, config_error, logic_error, test_isolation, missing_validation, missing_permission, missing_workflow_step, inadequate_documentation, missing_tooling, incomplete_setup
+   - **resolution_type**: code_fix, migration, config_change, test_fix, dependency_update, environment_setup, workflow_improvement, documentation_update, tooling_addition, seed_data_update
+   - **severity**: critical, high, medium, low
+
+   **Category mapping (problem_type -> directory):**
+
+   | problem_type | Directory |
+   |---|---|
+   | build_error | build-errors/ |
+   | test_failure | test-failures/ |
+   | runtime_error | runtime-errors/ |
+   | performance_issue | performance-issues/ |
+   | database_issue | database-issues/ |
+   | security_issue | security-issues/ |
+   | ui_bug | ui-bugs/ |
+   | integration_issue | integration-issues/ |
+   | logic_error | logic-errors/ |
+   | developer_experience | developer-experience/ |
+   | workflow_issue | workflow-issues/ |
+   | best_practice | best-practices/ |
+   | documentation_gap | documentation-gaps/ |
 
 #### 2. **Solution Extractor**
    - Analyzes all investigation steps
    - Identifies root cause
    - Extracts working solution with code examples
    - Incorporates auto memory excerpts (if provided by the orchestrator) as supplementary evidence -- conversation history and the verified fix take priority; if memory notes contradict the conversation, note the contradiction as cautionary context
-   - Returns: Solution content block
+   - Develops prevention strategies and best practices guidance
+   - Generates test cases if applicable
+   - Returns: Solution content block including prevention section
+
+   **Expected output sections (follow this structure):**
+
+   - **Problem**: 1-2 sentence description of the issue
+   - **Symptoms**: Observable symptoms (error messages, behavior)
+   - **What Didn't Work**: Failed investigation attempts and why they failed
+   - **Solution**: The actual fix with code examples (before/after when applicable)
+   - **Why This Works**: Root cause explanation and why the solution addresses it
+   - **Prevention**: Strategies to avoid recurrence, best practices, and test cases. Include concrete code examples where applicable (e.g., gem configurations, test assertions, linting rules)
 
 #### 3. **Related Docs Finder**
    - Searches `docs/solutions/` for related documentation
@@ -85,17 +124,23 @@ Launch these subagents IN PARALLEL. Each returns text data to the orchestrator.
    - Flags any related learning or pattern docs that may now be stale, contradicted, or overly broad
    - Returns: Links, relationships, and any refresh candidates
 
-#### 4. **Prevention Strategist**
-   - Develops prevention strategies
-   - Creates best practices guidance
-   - Generates test cases if applicable
-   - Returns: Prevention/testing content
+   **Search strategy (grep-first filtering for efficiency):**
 
-#### 5. **Category Classifier**
-   - Determines optimal `docs/solutions/` category
-   - Validates category against schema
-   - Suggests filename based on slug
-   - Returns: Final path and filename
+   1. Extract keywords from the problem context: module names, technical terms, error messages, component types
+   2. If the problem category is clear, narrow search to the matching `docs/solutions/<category>/` directory
+   3. Use the native content-search tool (e.g., Grep in Claude Code) to pre-filter candidate files BEFORE reading any content. Run multiple searches in parallel, case-insensitive, targeting frontmatter fields. These are template patterns -- substitute actual keywords:
+      - `title:.*<keyword>`
+      - `tags:.*(<keyword1>|<keyword2>)`
+      - `module:.*<module name>`
+      - `component:.*<component>`
+   4. If search returns >25 candidates, re-run with more specific patterns. If <3, broaden to full content search
+   5. Read only frontmatter (first 30 lines) of candidate files to score relevance
+   6. Fully read only strong/moderate matches
+   7. Return distilled links and relationships, not raw file contents
+
+   **GitHub issue search:**
+
+   Prefer the `gh` CLI for searching related issues: `gh issue list --search "<keywords>" --state all --limit 5`. If `gh` is not installed, fall back to the GitHub MCP tools (e.g., `unblocked` data_retrieval) if available. If neither is available, skip GitHub issue search and note it was skipped in the output.
 
 </parallel_tasks>
 
@@ -275,11 +320,9 @@ In compact-safe mode, only suggest `ce:compound-refresh` if there is an obvious 
 Auto memory: 2 relevant entries used as supplementary evidence
 
 Subagent Results:
-  ✓ Context Analyzer: Identified performance_issue in brief_system
-  ✓ Solution Extractor: 3 code fixes
+  ✓ Context Analyzer: Identified performance_issue in brief_system, category: performance-issues/
+  ✓ Solution Extractor: 3 code fixes, prevention strategies
   ✓ Related Docs Finder: 2 related issues
-  ✓ Prevention Strategist: Prevention strategies, test suggestions
-  ✓ Category Classifier: `performance-issues`
 
 Specialized Agent Reviews (Auto-Triggered):
   ✓ performance-oracle: Validated query optimization approach
