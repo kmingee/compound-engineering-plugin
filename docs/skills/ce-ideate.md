@@ -23,7 +23,7 @@ The chain works across domains — every step supports universal mode. `ce-ideat
 
 | Question | Answer |
 |----------|--------|
-| What does it do? | Grounds in real material, generates candidates across six conceptual frames, critiques them adversarially, presents 5-7 survivors — each with a tagged basis |
+| What does it do? | Grounds in real material, decomposes the topic into orthogonal axes, generates candidates across six conceptual frames spread over those axes, critiques them adversarially, presents 5-7 survivors — each with a tagged basis |
 | When to use it | Greenfield exploration, big-picture thinking, codebase audits, surprise-me runs, naming, decisions, business strategy — any domain where you want a qualified candidate set rather than a refined idea |
 | What it produces | Ranked ideation artifact in `docs/ideation/` (or to Proof for non-software topics) |
 | What's next | `/ce-brainstorm` on a chosen survivor — or save and walk away |
@@ -45,7 +45,8 @@ Asking an AI "what's worth exploring here?" usually returns:
 `ce-ideate` separates **grounding**, **generation**, **critique**, and **selection** as discrete phases — and the quality mechanism is **explicit rejection with reasons**, not optimistic ranking.
 
 - Grounding agents do the homework first — codebase scan, past learnings, external prior art, optional Slack and issue intelligence
-- Six parallel ideation sub-agents work from different conceptual frames
+- The topic is decomposed into 3-5 orthogonal axes derived from grounding — *what aspects of the subject* sub-agents must cover, distinct from *how they think about it*
+- Six parallel ideation sub-agents work from different conceptual frames, each spreading ideas across the axes
 - Every idea must carry a tagged **basis** — direct evidence, named external prior art, or a written-out first-principles argument
 - Ideas without a basis are rejected; the failure mode being prevented is "AI slop"
 - Survivors are scored against a consistent rubric and presented with downsides and confidence
@@ -93,9 +94,9 @@ Phrases like "what users are reporting" or "biggest issue patterns" trigger an i
 
 You invoke `ce-ideate "DX improvements"` from inside a code repo. The agent announces it'll dispatch ~9 grounding and ideation agents and offers skip phrases for cost control.
 
-Grounding agents return in parallel — a codebase summary, relevant past learnings, external prior art on developer-experience patterns. Six ideation sub-agents then generate candidates from different frames. The orchestrator merges 40+ candidates into one list, synthesizes cross-cutting combinations, and runs the adversarial critique pass — about 13 ideas are cut for being too vague, unjustified, or duplicative.
+Grounding agents return in parallel — a codebase summary, relevant past learnings, external prior art on developer-experience patterns. The orchestrator decomposes the topic into 4-5 axes derived from that grounding (e.g., for "DX improvements" — feedback loops, environment friction, tooling ergonomics, knowledge accessibility, automation surface). Six ideation sub-agents then generate candidates from different frames, each tagged with the axis it targets. The orchestrator merges 40+ candidates into one list, synthesizes cross-cutting combinations, runs an axis-coverage check (any empty axis triggers one bounded recovery dispatch), and runs the adversarial critique pass — about 13 ideas are cut for being too vague, unjustified, or duplicative.
 
-You see six survivors. Each has a tagged basis (e.g., "tests/cli.test.ts:42 spawns 14 different bash invocations"), a rationale connecting that basis to the move's significance, downsides, confidence, and complexity. A rejection summary lists what was cut and why. Then a four-option menu: refine in conversation, open in Proof, brainstorm a chosen survivor, or save and end.
+You see six survivors spread across the axes. Each has a tagged basis (e.g., "tests/cli.test.ts:42 spawns 14 different bash invocations"), a rationale connecting that basis to the move's significance, the axis it targets, downsides, confidence, and complexity. A rejection summary lists what was cut and why, plus any axis that ended up uncovered as a deliberate gap. Then a four-option menu: refine in conversation, open in Proof, brainstorm a chosen survivor, or save and end.
 
 ---
 
