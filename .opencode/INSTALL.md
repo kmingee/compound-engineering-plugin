@@ -1,6 +1,6 @@
-# Installing Compound Engineering for OpenCode
+# 为 OpenCode 安装 Compound Engineering
 
-Add Compound Engineering to the `plugin` array in your global or project `opencode.json`:
+将 Compound Engineering 添加到全局或项目 `opencode.json` 的 `plugin` 数组中：
 
 ```json
 {
@@ -8,9 +8,9 @@ Add Compound Engineering to the `plugin` array in your global or project `openco
 }
 ```
 
-Restart OpenCode after changing the config. The OpenCode plugin registers the Compound Engineering skills directory directly; no Bun installer or generated skill copy is required.
+修改配置后重启 OpenCode。OpenCode plugin 会直接注册 Compound Engineering 的 skills 目录；无需 Bun 安装器，也无需生成 skill 副本。
 
-To pin a release, add a tag. Replace `X.Y.Z` with the release you want — see the [releases page](https://github.com/EveryInc/compound-engineering-plugin/releases) for available tags:
+如果要固定到某个版本，请添加 tag。将 `X.Y.Z` 替换为你需要的 release；可在 [releases 页面](https://github.com/EveryInc/compound-engineering-plugin/releases)查看可用 tag：
 
 ```json
 {
@@ -18,9 +18,9 @@ To pin a release, add a tag. Replace `X.Y.Z` with the release you want — see t
 }
 ```
 
-## Local Development
+## 本地开发
 
-From this checkout, point OpenCode at the package path:
+在这个 checkout 中，让 OpenCode 指向 package 路径：
 
 ```json
 {
@@ -28,4 +28,4 @@ From this checkout, point OpenCode at the package path:
 }
 ```
 
-Restart OpenCode after changing the package source.
+修改 package 来源后重启 OpenCode。

@@ -1,38 +1,38 @@
-# Privacy & Data Handling
+# 隐私与数据处理
 
-This repository contains:
-- a root plugin package made of markdown/config content
-- a CLI (`@every-env/compound-plugin`) that converts and installs plugin content for different AI coding tools
+本仓库包含：
+- 一个由 Markdown/配置内容组成的根级 plugin package
+- 一个 CLI（`@every-env/compound-plugin`），用于为不同的 AI 编程工具转换并安装 plugin 内容
 
-## Summary
+## 摘要
 
-- The plugin package does not include telemetry or analytics code.
-- The plugin package does not run a background service that uploads repository/workspace contents automatically.
-- Data leaves your machine only when your host/tooling or an explicitly invoked integration performs a network request.
+- Plugin package 不包含遥测或分析代码。
+- Plugin package 不会运行后台服务来自动上传 repository/workspace 内容。
+- 只有当你的宿主/工具，或你明确调用的集成发起网络请求时，数据才会离开你的设备。
 
-## What May Send Data
+## 哪些情况可能发送数据
 
-1. AI host/model providers
+1. AI 宿主/模型提供商
 
-If you run the plugin in tools like Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf, etc., those tools may send prompts/context/code to their configured model providers. This behavior is controlled by those tools and providers, not by this plugin repository.
+如果你在 Claude Code、Cursor、Codex、Gemini CLI、Copilot、Windsurf 等工具中运行本 plugin，这些工具可能会把 prompt、上下文或代码发送给其配置的模型提供商。此行为由这些工具和提供商控制，而不是由本 plugin 仓库控制。
 
-2. Optional integrations and tools
+2. 可选集成和工具
 
-The plugin includes optional capabilities that can call external services when explicitly used, for example:
-- Context7 MCP (`https://mcp.context7.com/mcp`) for documentation lookup
-- Proof (`https://www.proofeditor.ai`) when using share/edit flows
-- Other opt-in skills (for example image generation or cloud upload workflows) that call their own external APIs/services
+Plugin 包含一些可选能力，在你明确使用时可能调用外部服务，例如：
+- Context7 MCP（`https://mcp.context7.com/mcp`），用于查找文档
+- Proof（`https://www.proofeditor.ai`），用于 share/edit 流程
+- 其他 opt-in skills（例如图像生成或云上传工作流），它们会调用各自的外部 API/服务
 
-If you do not invoke these integrations, they do not transmit your project data.
+如果你不调用这些集成，它们就不会传输你的项目数据。
 
-3. Package/installer infrastructure
+3. Package/安装器基础设施
 
-Installing dependencies or packages (for example `npm`, `bunx`) communicates with package registries/CDNs according to your package manager configuration.
+安装依赖或 package（例如使用 `npm`、`bunx`）时，会按照你的 package manager 配置与 package registry/CDN 通信。
 
-## Data Ownership and Retention
+## 数据所有权与保留
 
-This repository does not operate a backend service for collecting or storing your project/workspace data. Data retention and processing for model prompts or optional integrations are governed by the external services you use.
+本仓库不运营用于收集或存储你的项目/workspace 数据的后端服务。模型 prompt 或可选集成的数据保留与处理方式，由你使用的外部服务决定。
 
-## Security Reporting
+## 安全问题报告
 
-If you identify a security issue in this repository, follow the disclosure process in [SECURITY.md](SECURITY.md).
+如果你发现本仓库存在安全问题，请按照 [SECURITY.md](SECURITY.md) 中的披露流程处理。

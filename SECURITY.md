@@ -1,29 +1,29 @@
-# Security Policy
+# 安全策略
 
-## Supported Versions
+## 支持的版本
 
-Security fixes are applied to the latest version on `main`.
+安全修复会应用到 `main` 上的最新版本。
 
-## Reporting a Vulnerability
+## 报告漏洞
 
-Please do not open a public issue for undisclosed vulnerabilities.
+对于尚未公开的漏洞，请不要创建公开 issue。
 
-Instead, report privately by emailing:
+请改为通过以下邮箱私下报告：
 - `kieran@every.to`
 
-Include:
-- A clear description of the issue
-- Reproduction steps or proof of concept
-- Impact assessment (what an attacker can do)
-- Any suggested mitigation
+请包含：
+- 对问题的清晰描述
+- 复现步骤或概念验证（proof of concept）
+- 影响评估（攻击者能够做什么）
+- 任何建议的缓解措施
 
-We will acknowledge receipt as soon as possible and work with you on validation, remediation, and coordinated disclosure timing.
+我们会尽快确认收到报告，并与你一起完成验证、修复以及协调披露时间。
 
-## Scope Notes
+## 范围说明
 
-This repository primarily contains plugin instructions/configuration plus a conversion/install CLI.
+本仓库主要包含 plugin 指令/配置，以及一个转换/安装 CLI。
 
-- Plugin instruction content itself does not run as a server process.
-- Security/privacy behavior also depends on the host AI tool and any external integrations you explicitly invoke.
+- Plugin 指令内容本身不会作为服务器进程运行。
+- 安全和隐私行为还取决于宿主 AI 工具，以及你明确调用的任何外部集成。
 
-For data-handling details, see [PRIVACY.md](PRIVACY.md).
+有关数据处理的详细信息，请参阅 [PRIVACY.md](PRIVACY.md)。
